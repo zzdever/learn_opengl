@@ -8,6 +8,14 @@
 #include <stdio.h>
 
 //==========================================
+// Key Specification
+// j,l,i,k,u,n: move light around
+// t: switch texture of the teaport
+// b: whether to blend the texture
+//==========================================
+
+
+//==========================================
 // File path definition
 // You may need to change this to compile
 #define CRACK "/Users/ying/Crack.bmp"
@@ -350,39 +358,18 @@ void Draw_Triangle() // This function draws a triangle with RGB colors
     
     glBindTexture(GL_TEXTURE_2D, texCrack);     // use Crack texture
     if(texBlend) {
-        GLfloat g_T0Blend = 0.6f;
-        GLfloat g_T1Blend = 0.4f;
-        
-        float arr0[4] = {g_T0Blend, g_T0Blend, g_T0Blend, g_T0Blend};
-        float arr1[4] = {g_T1Blend, g_T1Blend, g_T1Blend, g_T1Blend};
-        
-        
         glActiveTexture(GL_TEXTURE0);
         // save texture attribute TEXTURE0
         glPushAttrib(GL_TEXTURE_BIT);
-        
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_CONSTANT);
-        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, arr0);
-        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);    // set to modulate texture
         
         
         glActiveTexture(GL_TEXTURE1);
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texSpot);
         
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_INTERPOLATE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
-        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
-        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
-        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_SRC_COLOR);
-        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, arr1);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);    // set to modulate texture
         
     }
     
@@ -606,6 +593,7 @@ void redraw()
 	glRotatef(fRotate, 0, 1.0f, 0);			// Rotate around Y axis
 	glRotatef(-90, 1, 0, 0);
 	glScalef(0.2, 0.2, 0.2);
+    
     glPushAttrib(GL_ALL_ATTRIB_BITS);   // save all attributes
 	Draw_Triangle();						// Draw triangle
     glPopAttrib();  // restore all attributes
