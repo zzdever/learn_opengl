@@ -8,6 +8,155 @@
 
 
 
+
+/*
+
+#include <GLUT/glut.h>
+
+void myinit(void);
+void display(void);
+
+
+void myinit(void)
+{
+
+    
+    //glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    GLfloat mat_ambient[]={0.0,0.1,0.8,1.0};
+    GLfloat mat_diffuse[]={0.0,0.3,0.6,1.0};
+    GLfloat mat_specular[]={1.0,0.0,1.0,1.0};
+    GLfloat mat_shininess[]={15.0};
+    GLfloat position[]={5.0,5.0,5.0,0.0};
+    GLfloat fogColor[4]={0.6,0.6,0.0,1.0};
+    
+    glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+    glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
+    glLightfv(GL_LIGHT0,GL_POSITION,position);
+    
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glFrontFace(GL_CW);
+    // glEnable(GL_POLYGON_SMOOTH);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+    
+    glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    
+   
+    //启用雾化处理
+    glEnable(GL_FOG);
+    {
+        //采用线性变化的雾化效果
+        glFogi(GL_FOG_MODE,GL_LINEAR);
+        //指定雾化颜色（黄色）
+        glFogfv(GL_FOG_COLOR,fogColor);
+        //指定按线性变化时计算公式的参量
+        glFogf(GL_FOG_START,3.0);
+        glFogf(GL_FOG_END,15.0);
+        //规定雾化效果的质量
+        glHint(GL_FOG_HINT,GL_DONT_CARE);
+    }
+ 
+     
+    // glShadeModel(GL_FLAT);
+}
+
+void reshape(GLsizei w,GLsizei h)
+{
+    
+    glViewport(0,0,w,h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    
+    if(w<=h*3)
+        glOrtho(-6.0,6.0,-2.0*(GLfloat)h*3/(GLfloat)w,
+                2.0*(GLfloat)h*3/(GLfloat)w,0.0,10.0);
+    else
+        glOrtho(-6.0*(GLfloat)h/(GLfloat)w,
+                6.0*(GLfloat)h/(GLfloat)w,-2.0,2.0,0.0,10.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+
+void display(void)
+{
+    
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    
+    //在不同远近（Z方向）绘制同样大小、颜色的环，显示雾化的效果
+    glPushMatrix();
+    glTranslatef(-3.0,-1.5,-3.0);
+    //auxSolidTorus(0.6,1.5);
+    glutSolidTorus(0.6, 1.5, 100, 100);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(-0.5,-0.5,-6.0);
+    //auxSolidTorus(0.6,1.5);
+    glutSolidTorus(0.6, 1.5, 100, 100);
+
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(2.0,0.5,-8.0);
+    //auxSolidTorus(0.6,1.5);
+    glutSolidTorus(0.6, 1.5, 100, 100);
+
+    glPopMatrix();
+    
+    glFlush();
+    
+    glutSwapBuffers();
+
+    
+    
+}
+
+int main(int argc, char ** argv)
+{
+    glutInit(&argc, argv);
+    glutInitWindowSize(640, 480);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_STENCIL);
+    
+    
+    glutCreateWindow("Glut Demo");
+    glutReshapeFunc(reshape);
+    glutDisplayFunc(display);
+    //glutIdleFunc(&mIdle);
+    //glutKeyboardFunc(key);
+    
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    
+    myinit();
+    
+    glutMainLoop();
+    
+}
+ 
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #define TEST 0
 
 #if TEST
@@ -419,7 +568,7 @@ float angle = 0.0;
 
 GLuint texGround;
 GLuint texWall;
-
+GLuint texSky;
 
 //float mat_specular[] = {0.85f, 0.65f, 0.2f, 1.0f};
 //float mat_ambient[] = {0.85f, 0.65f, 0.2f, 1.0f};
@@ -482,7 +631,65 @@ void display()
     
     
     
+    // 清除屏幕
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // 设置视角
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(75, 1, 1, 21);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(1, 5, 5, 0, 0, 0, 0, 0, 1);
     
+    
+    
+//    GLUquadricObj *q;
+//    q = gluNewQuadric(); // 绘制球体
+//    gluQuadricNormals(q, GL_SMOOTH); // 产生光滑
+//    gluQuadricTexture(q, GL_TRUE); // 激活曲面纹理坐标参照
+//    
+//    glBindTexture(GL_TEXTURE_2D, texSky); // 设置纹理
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    gluSphere(q, 10.0f, 32, 16); // 绘制球体
+    
+
+    
+//    //void DrawObject() // 绘制气球球体
+//    {
+//        glTranslatef(0.0f,1.5f,0.0f);
+//        glColor3f(1.0f, 1.0f, 1.0f); // 设置成白色
+//        //glBindTexture(GL_TEXTURE_2D, texture1[0]); // Select Texture 0 (1)
+//        gluSphere(q, 1.0f, 32, 16); // 绘制球体
+//        glBindTexture(GL_TEXTURE_2D, texSky); // 设置纹理
+//        glColor4f(1.0f, 1.0f, 1.0f, 0.4f); // 设置成白色，40%透明效果（融合）
+//        glEnable(GL_BLEND); // 启动融合操作
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE); // 指定混合的属性
+//        glEnable(GL_TEXTURE_GEN_S); // 起用球体纹理影射
+//        glEnable(GL_TEXTURE_GEN_T); // 起用球体纹理影射
+//        gluSphere(q, 1.0f, 32, 16); // 用新的纹理来绘制第二个球体球体
+//        // 将产生多维纹理效果
+//        glDisable(GL_TEXTURE_GEN_S); // 取消球体纹理影射
+//        glDisable(GL_TEXTURE_GEN_T); // 取消球体纹理影射
+//        glDisable(GL_BLEND); // 取消混合
+//    }
+    
+    
+    
+
+    
+gluCylinder
+    
+    
+    glutSwapBuffers();
+
+    
+    
+    
+    return;
+
     
     // 清除屏幕
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -794,9 +1001,12 @@ int main(int argc, char ** argv)
     
     texGround = load_texture("/Users/ying/ground.bmp");
     texWall = load_texture("/Users/ying/wall.bmp");
+    texSky = load_texture("/Users/ying/nightskya.bmp");
     
     
     glutMainLoop();
+    
+
 }
 
 #endif

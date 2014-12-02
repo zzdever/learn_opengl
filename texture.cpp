@@ -1,4 +1,5 @@
-#define TEXTURE 1
+
+#define TEXTURE 0
 
 
 #if TEXTURE
