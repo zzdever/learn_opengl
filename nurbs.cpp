@@ -1,5 +1,6 @@
 
-#define NURBS 1
+#define NURBS 0
+
 
 # if NURBS
 #include <iostream>
@@ -18,6 +19,8 @@ GLUnurbsObj *pNurb_lamp = NULL;
 
 float eye[] = {0, 0, 15.0f};
 float center[] = {0, 0, 0};
+
+GLint drawlist;
 
 //台灯底座的控制点
 GLfloat ctrlPoints_base[4][4][3]={
@@ -225,11 +228,30 @@ void CALLBACK NurbsErrorHandler(GLenum nErrorCode)
 	glutSetWindowTitle(cMessage);
 }
 
-//用于绘制台灯
-void RenderScene(void)
+GLint RenderScene(void);
+
+void redraw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    
+    glRotatef(spin_x, 1.0, 0, 0);
+    
+    RenderScene();
+    //glCallList(drawlist);
+    
+    spin_x += 0.5f;
+    
+    glutSwapBuffers();/*显示图像*/
+}
+
+//用于绘制台灯
+GLint RenderScene(void)
+{
+
+    GLint lid = 0;
+//    lid = glGenLists(1);
+//	glNewList(lid, GL_COMPILE);
     
 	/*保存模型视图矩阵*/
 	glMatrixMode(GL_MODELVIEW);
@@ -328,7 +350,9 @@ void RenderScene(void)
     
     //    DrawPoints();
 	glPopMatrix();/*重置模型视图矩阵*/
-	glutSwapBuffers();/*显示图像*/
+    
+    //glEndList();
+    return lid;
 }
 
 
@@ -356,6 +380,9 @@ void SetupRC()
 	gluNurbsProperty(pNurb_base, GLU_SAMPLING_TOLERANCE, 25.0f);/*设置采样容差，定义线框的精细程度*/
     gluNurbsProperty(pNurb_pipe, GLU_SAMPLING_TOLERANCE, 25.0f);/*设置采样容差，定义线框的精细程度*/
     gluNurbsProperty(pNurb_lamp, GLU_SAMPLING_TOLERANCE, 25.0f);/*设置采样容差，定义线框的精细程度*/
+    
+    
+    drawlist = RenderScene();
 }
 
 /*窗口大小变化*/
@@ -392,7 +419,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("NURBS Surface");
-    glutDisplayFunc(RenderScene);
+    glutDisplayFunc(redraw);
 	glutReshapeFunc(ChangeSize);
 	glutSpecialFunc(spec_keyboard);
     glutIdleFunc(idle);

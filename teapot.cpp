@@ -1,7 +1,8 @@
-#define TEA 0
+
+#define TEAPORT 0
 
 
-#if TEA
+#if TEAPORT
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -181,6 +182,7 @@ void redraw()
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();									// Reset The Current Modelview Matrix
+
     
 	gluLookAt(eye[0], eye[1], eye[2],
               center[0], center[1], center[2],

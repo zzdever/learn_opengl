@@ -107,6 +107,8 @@ void display(void)
     glTranslatef(2.0,0.5,-8.0);
     //auxSolidTorus(0.6,1.5);
     glutSolidTorus(0.6, 1.5, 100, 100);
+    
+
 
     glPopMatrix();
     
@@ -140,7 +142,13 @@ int main(int argc, char ** argv)
     
 }
  
- */
+*/
+
+
+
+
+
+
 
 
 
